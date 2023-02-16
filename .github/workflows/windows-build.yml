@@ -44,7 +44,7 @@ jobs:
             
       - name: Setup C/C++ Compiler
         run: |
-          curl "https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/windows-x64.zip" -o gcc.zip
+          curl "https://ghproxy.com/https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/windows-x64.zip" -o gcc.zip
           unzip gcc.zip
       
       - name: Checking C/C++ Compiler
