@@ -49,3 +49,13 @@ jobs:
       
       - name: Checking C/C++ Compiler
         run: ./mingw/bin/g++ --version
+        
+      - name: Compiling Sonolus Server for Windows
+        run: |
+          cd sonolus-server-cpp
+          ../mingw/bin/g++.exe main.cpp -osonolus -lmysql -lpthread -lcrypto -lssl -lwsock32 -ljson -std=c++14 -O2
+          
+      - name: Checking Sonolus Server for Windows
+        run: |
+          cd sonolus-server-cpp
+          ./sonolus help
