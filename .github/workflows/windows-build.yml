@@ -29,23 +29,23 @@ jobs:
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Test Github Release
-        run: echo ahahaha > test.txt
+#       - name: Test Github Release
+#         run: echo ahahaha > test.txt
 
-      - name: Test Github Release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ env.VERSION }}
-          title: Sonolus Server ${{ env.VERSION }}
-          prerelease: false
-          files: |
-            test.txt
+#       - name: Test Github Release
+#         uses: marvinpinto/action-automatic-releases@latest
+#         with:
+#           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#           automatic_release_tag: ${{ env.VERSION }}
+#           title: Sonolus Server ${{ env.VERSION }}
+#           prerelease: false
+#           files: |
+#             test.txt
             
       - name: Setup C/C++ Compiler
         run: |
-          curl https://github.com/LittleYang0531/LittleYang0531/releases/download/g%2B%2B/windows-x64.zip
-          unzip windows-x64.zip
+          curl "https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/windows-x64.zip" -o gcc.zip
+          unzip gcc.zip
       
       - name: Checking C/C++ Compiler
         run: ./mingw/bin/g++ --version
