@@ -77,7 +77,6 @@ jobs:
           mv ./web/html ./packages/web/ -Force
           mv ./CODE_OF_CONDUCT.md ./packages/ -Force
           mv ./data.sql ./packages/ -Force
-          mv ./favicon.ico ./packages/ -Force
           mv ./LICENSE.txt ./packages/ -Force
           mv ./README.md ./packages/ -Force
           mv ./README_en.md ./packages/ -Force
