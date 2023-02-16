@@ -67,3 +67,20 @@ jobs:
           mv sonolus ./packages
           cd packages
           ./sonolus help
+
+      - name: Packaging Sonolus Server
+        run: |
+          mv ./config/* ./packages/config/
+          mv ./i18n/* ./packages/i18n/
+          mv ./web/css ./packages/web/
+          mv ./web/js ./packages/web/
+          mv ./web/html ./packages/web/
+          mv ./CODE_OF_CONDUCT.md ./packages/
+          mv ./data.sql ./packages/
+          mv ./favicon.ico ./packages/
+          mv ./LICENSE.txt ./packages/
+          mv ./README.md ./packages/
+          mv ./README_en.md ./packages/
+          cd packages
+          zip windows-x64.zip ./* -R
+          
