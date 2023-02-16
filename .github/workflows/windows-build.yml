@@ -5,13 +5,13 @@ name: windows-build
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-#   push:
-#     branches: [ "main" ]
+  push:
+    branches: [ "main" ]
 #   pull_request:
 #     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+#   workflow_dispatch:
   
 env:
   VERSION: v1.2.0
@@ -44,7 +44,7 @@ jobs:
             
       - name: Setup C/C++ Compiler
         run: |
-          wget https://github.com/LittleYang0531/LittleYang0531/releases/download/g%2B%2B/windows-x64.zip gcc.zip
+          curl https://github.com/LittleYang0531/LittleYang0531/releases/download/g%2B%2B/windows-x64.zip -O gcc.zip
           unzip gcc.zip
       
       - name: Checking C/C++ Compiler
