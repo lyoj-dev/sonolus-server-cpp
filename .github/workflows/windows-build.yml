@@ -81,11 +81,7 @@ jobs:
           mv ./README.md ./packages/ -Force
           mv ./README_en.md ./packages/ -Force
           cd packages
-          
-      - name: 7z
-        uses: edgarrc/action-7z@v1
-        with:
-          args: 7z a windows-x64.7z ./packages/*
+          Compress-Archive -Path ./packages/* -DestinationPath ./windows-x64.zip
       
       - name: Test Github Release
         uses: marvinpinto/action-automatic-releases@latest
@@ -95,4 +91,4 @@ jobs:
           title: Sonolus Server ${{ env.VERSION }}
           prerelease: false
           files: |
-            windows-x64.7z
+            windows-x64.zip
