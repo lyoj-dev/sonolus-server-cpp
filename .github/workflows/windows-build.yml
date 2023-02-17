@@ -62,10 +62,11 @@ jobs:
           cd packages
           unzip packages.zip
           rm ./packages.zip
+          rm sonolus.exe
       
       - name: Checking Sonolus Server for Windows
         run: |
-          mv sonolus.exe ./packages -Force
+          mv sonolus.exe ./packages
           cd packages
           ./sonolus help
 
