@@ -68,7 +68,6 @@ jobs:
         run: |
           mv sonolus.exe ./packages
           cd packages
-          ./sonolus help
 
       - name: Packaging Sonolus Server
         run: |
