@@ -65,7 +65,7 @@ jobs:
       
       - name: Checking Sonolus Server for Windows
         run: |
-          mv sonolus.exe ./packages
+          mv sonolus.exe ./packages -Force
           cd packages
           ./sonolus help
 
