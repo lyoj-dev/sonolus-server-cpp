@@ -61,7 +61,7 @@ jobs:
           mv packages.zip ./packages
           cd packages
           unzip packages.zip
-          rm ./packages/packages.zip
+          rm ./packages.zip
       
       - name: Checking Sonolus Server for Windows
         run: |
