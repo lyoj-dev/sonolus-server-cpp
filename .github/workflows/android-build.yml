@@ -67,9 +67,9 @@ jobs:
           
           # 在主机平台上编译 libmysqlclient
           sudo apt install cmake openssl libssl-dev
-          wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.28-src.tar.gz
-          tar -xvf mysql-connector-c++-8.0.28-src.tar.gz
-          cd mysql-connector-c++-8.0.28-src
+          wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
+          tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
+          cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
           cmake .. && make -j4
           export PATH=$PATH:$(pwd)/extra && cd ..
