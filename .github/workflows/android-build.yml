@@ -41,7 +41,7 @@ jobs:
           wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
           tar -xvf openssl-1.1.1t.tar.gz
           cd openssl-1.1.1t
-          ./config --prefix=./ no-shared no-zlib no-asm  no-sse2no-compno-dso -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
+          ./config --prefix="$(pwd)/output/" no-shared no-zlib no-asm  no-sse2no-compno-dso -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           make CC="$COMPILER/aarch64-none-linux-gnu-gcc" AR="$COMPILER/aarch64-none-linux-gnu-ar rcs" RANLIB="$COMPILER/aarch64-none-linux-gnu-ranlib"
           
 #       - name: Test Github Release
