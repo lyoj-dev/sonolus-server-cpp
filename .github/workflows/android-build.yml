@@ -71,7 +71,8 @@ jobs:
           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
-          cmake .. && make -j4
+          cmake ..
+          make
           export PATH=$PATH:$(pwd)/extra && cd ..
           
           # 交叉编译 libmysqlclient
