@@ -44,7 +44,7 @@ jobs:
           ./config --prefix="$(pwd)/output/" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           export Makefile=$(cat Makefile)
           echo ${Makefile//-m64/} > Makefile 
-          make CC="$COMPILER/aarch64-none-linux-gnu-gcc" AR="$COMPILER/aarch64-none-linux-gnu-ar rcs" RANLIB="$COMPILER/aarch64-none-linux-gnu-ranlib" -j8
+          make CC="$COMPILER/aarch64-none-linux-gnu-gcc" AR="$COMPILER/aarch64-none-linux-gnu-ar rcs" RANLIB="$COMPILER/aarch64-none-linux-gnu-ranlib"
           
 #       - name: Test Github Release
 #         uses: marvinpinto/action-automatic-releases@latest
