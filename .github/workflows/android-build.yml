@@ -39,6 +39,8 @@ jobs:
           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ --version
+          
+          free -m
       
 #       - name: Cross-Compile libcrypto & libssl
 #         run: |
