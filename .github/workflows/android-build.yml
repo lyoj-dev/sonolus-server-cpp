@@ -45,11 +45,11 @@ jobs:
           wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
           tar -xvf openssl-1.1.1t.tar.gz
           cd openssl-1.1.1t
-          ./config --prefix="$(pwd)/output/" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
+          ./config --prefix="$(pwd)" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           sed -i 's/-m64//g' Makefile
-          make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib"
+          make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j8
           cp ./include/* $INCLUDE/ -r
-          ls ./output
+          ls
           
 #       - name: Test Github Release
 #         uses: marvinpinto/action-automatic-releases@latest
