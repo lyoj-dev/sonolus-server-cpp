@@ -77,7 +77,6 @@ jobs:
           
           # 交叉编译 libmysqlclient
           mkdir armBuild && cd armBuild
-          cmake ..
           cat > CMakeLists.txt<<EOF
           #####################################################
           SET(CMAKE_SYSTEM_NAME Linux)
@@ -99,7 +98,7 @@ jobs:
           SET(HAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS OFF)
           #####################################################
           EOF
-          make
+          cmake .. && make
           ls
           
           
