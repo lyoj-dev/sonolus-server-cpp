@@ -67,10 +67,10 @@ jobs:
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           
           # 在主机平台上编译 libmysqlclient
-          # sudo apt install cmake openssl libssl-dev
-          # wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
-          # tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
-          # cd mysql-connector-c++-8.0.30-src
+          sudo apt install cmake openssl libssl-dev
+          wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
+          tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
+          cd mysql-connector-c++-8.0.30-src
           # mkdir build && cd build
           # export MAKEFLAGS=-l2
           # cmake .. && make
