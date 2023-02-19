@@ -53,7 +53,6 @@ jobs:
           ./config --prefix="$(pwd)" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           sed -i 's/-m64//g' Makefile
           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j8
-          make install
           
           # 复制必要文件
           cp ./include/* $INCLUDE/ -r
