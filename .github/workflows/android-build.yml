@@ -55,39 +55,40 @@ jobs:
           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j8
           
           # 复制必要文件
+          ls
           cp ./include/* $INCLUDE/ -r
           cp ./libssl.a $LIBRARY/
           cp ./libcrypto.a $LIBRARY/
 
-      - name: Cross-Compile libmysqlclient
-        run: |
-          export LIBC=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
-          export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
-          export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
-          export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
+#       - name: Cross-Compile libmysqlclient
+#         run: |
+#           export LIBC=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
+#           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
+#           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
+#           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           
-          # 在主机平台上编译 libmysqlclient
-          sudo apt install cmake openssl libssl-dev
-          wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
-          tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
-          cd mysql-connector-c++-8.0.30-src
-          # mkdir build && cd build
-          # export MAKEFLAGS=-l2
-          # cmake .. && make
-          # export PATH=$PATH:$(pwd)/extra && cd ..
+#           # 在主机平台上编译 libmysqlclient
+#           sudo apt install cmake openssl libssl-dev
+#           wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
+#           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
+#           cd mysql-connector-c++-8.0.30-src
+#           # mkdir build && cd build
+#           # export MAKEFLAGS=-l2
+#           # cmake .. && make
+#           # export PATH=$PATH:$(pwd)/extra && cd ..
           
-          # 交叉编译 libmysqlclient
-          mkdir armBuild
-          cd armBuild 
-          cmake .. -DCMAKE_C_COMPILER="$COMPILER-gcc"\
-                   -DCMAKE_CXX_COMPILER="$COMPILER-g++"\
-                   -DCMAKE_SYSROOT="$LIBC"\
-                   -DSTACK_DIRECTION=1\
-                   -DHAVE_LLVM_LIBCPP=OFF\
-                   -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF
-          make
-          ls
+#           # 交叉编译 libmysqlclient
+#           mkdir armBuild
+#           cd armBuild 
+#           cmake .. -DCMAKE_C_COMPILER="$COMPILER-gcc"\
+#                    -DCMAKE_CXX_COMPILER="$COMPILER-g++"\
+#                    -DCMAKE_SYSROOT="$LIBC"\
+#                    -DSTACK_DIRECTION=1\
+#                    -DHAVE_LLVM_LIBCPP=OFF\
+#                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
+#                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF
+#           make
+#           ls
           
           
 #       - name: Test Github Release
