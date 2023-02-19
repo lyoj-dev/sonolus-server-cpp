@@ -40,24 +40,24 @@ jobs:
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ --version
       
-#       - name: Cross-Compile libcrypto & libssl
-#         run: |
-#           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
-#           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
-#           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
+      - name: Cross-Compile libcrypto & libssl
+        run: |
+          export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
+          export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
+          export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           
-#           # 交叉编译 libcrypto & libssl
-#           wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
-#           tar -xvf openssl-1.1.1t.tar.gz
-#           cd openssl-1.1.1t
-#           ./config --prefix="$(pwd)" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
-#           sed -i 's/-m64//g' Makefile
-#           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j8
+          # 交叉编译 libcrypto & libssl
+          wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
+          tar -xvf openssl-1.1.1t.tar.gz
+          cd openssl-1.1.1t
+          ./config --prefix="$(pwd)" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
+          sed -i 's/-m64//g' Makefile
+          make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j8
           
-#           # 复制必要文件
-#           cp ./include/* $INCLUDE/ -r
-#           cp ./libssl.a $LIBRARY/
-#           cp ./libcrypto.a $LIBRARY/
+          # 复制必要文件
+          cp ./include/* $INCLUDE/ -r
+          cp ./libssl.a $LIBRARY/
+          cp ./libcrypto.a $LIBRARY/
 
       - name: Cross-Compile libmysqlclient
         run: |
