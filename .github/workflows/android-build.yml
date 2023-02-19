@@ -73,7 +73,8 @@ jobs:
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
           export MAKEFLAGS=-l2
-          cmake .. && make
+          cmake .. -DWITH_SSL=/usr/include
+          make
           export PATH=$PATH:$(pwd)/extra && cd ..
           
           # 交叉编译 libmysqlclient
