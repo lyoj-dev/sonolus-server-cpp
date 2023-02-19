@@ -28,17 +28,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
             
-#      - name: Setup C/C++ Compiler
-#        run: |
-          # 安装交叉编译环境
-#          wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
-#          tar -xvf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+#       - name: Setup C/C++ Compiler
+#         run: |
+#           # 安装交叉编译环境
+#           wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
+#           tar -xvf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
           
-          # 测试交叉编译环境
-#          export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
-#          export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
-#          export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
-#          $COMPILER-g++ --version
+#           # 测试交叉编译环境
+#           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
+#           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
+#           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
+#           $COMPILER-g++ --version
       
 #       - name: Cross-Compile libcrypto & libssl
 #         run: |
@@ -71,9 +71,8 @@ jobs:
           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
-          cmake ..
-          make -j1
-
+          ulimit -m 2097152
+          cmake .. && make
           export PATH=$PATH:$(pwd)/extra && cd ..
           
           # 交叉编译 libmysqlclient
