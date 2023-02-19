@@ -98,7 +98,8 @@ jobs:
           SET(HAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS OFF)
           #####################################################
           EOF
-          cd armBuild && cmake .. && make
+          cd armBuild && cmake ..
+          make
           ls
           
           
