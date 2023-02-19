@@ -71,7 +71,7 @@ jobs:
           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
-          ulimit -m 2097152
+          export MAKEFLAGS=-l1
           cmake .. && make
           export PATH=$PATH:$(pwd)/extra && cd ..
           
