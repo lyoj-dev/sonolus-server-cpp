@@ -72,8 +72,8 @@ jobs:
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
           cmake ..
-          make&
-          while(true); do free; done
+          make -j1
+
           export PATH=$PATH:$(pwd)/extra && cd ..
           
           # 交叉编译 libmysqlclient
