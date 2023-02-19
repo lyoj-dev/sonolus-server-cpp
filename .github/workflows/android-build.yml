@@ -72,7 +72,7 @@ jobs:
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
           cmake ..
-          make
+          make&
           while(true); do free; done
           export PATH=$PATH:$(pwd)/extra && cd ..
           
