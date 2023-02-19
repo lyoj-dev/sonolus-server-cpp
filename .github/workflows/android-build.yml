@@ -81,10 +81,10 @@ jobs:
           #####################################################
           SET(CMAKE_SYSTEM_NAME Linux)
           SET(CMAKE_SYSTEM_VERSION 1)
-          set(CMAKE_SYSROOT $(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc)
+          set(CMAKE_SYSROOT "$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc")
           # specify the cross compiler
-          set(CMAKE_C_COMPILER $(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-gcc)
-          set(CMAKE_CXX_COMPILER $(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-g++)
+          set(CMAKE_C_COMPILER "$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-gcc")
+          set(CMAKE_CXX_COMPILER "$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-g++")
 
           # search for programs in the build host directories
           SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
