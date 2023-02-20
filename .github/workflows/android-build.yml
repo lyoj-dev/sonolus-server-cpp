@@ -58,7 +58,7 @@ jobs:
           cp ./include/* $INCLUDE/ -r
           cp ./libssl.a $LIBRARY/
           cp ./libcrypto.a $LIBRARY/
-          ls -lh
+          ls -lh ./crypto
 
       - name: Cross-Compile libmysqlclient
         run: |
