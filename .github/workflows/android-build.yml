@@ -50,16 +50,16 @@ jobs:
           wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
           tar -xvf openssl-1.1.1t.tar.gz
           cd openssl-1.1.1t
-          ./config --prefix="$(pwd)/output" no-shared no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
+          ./config --prefix="$(pwd)/output" no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           sed -i 's/-m64//g' Makefile
           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j16
           make install
           
           # 复制必要文件
+          ls -lh ./output/lib
           cp ./include/* $INCLUDE/ -r
-          # cp ./libssl.a $LIBRARY/
-          # cp ./libcrypto.a $LIBRARY/
-          ls -lh ./output
+          cp ./output/lib/libssl.a $LIBRARY/
+          cp ./output/lib/libcrypto.a $LIBRARY/
 
       - name: Cross-Compile libmysqlclient
         run: |
@@ -90,7 +90,8 @@ jobs:
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_LIBRARIES="$LIBRARY"
+                   -DOPENSSL_SSL_LIBRARY="$OPENSSL/output/lib/libssl.so"\
+                   -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL/output/lib/libcrypto.so"
           make
           ls
           
