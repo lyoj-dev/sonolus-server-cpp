@@ -82,7 +82,8 @@ jobs:
           
           # 交叉编译 libmysqlclient
           mkdir armBuild
-          cd armBuild 
+          cd armBuild
+          echo "$OPENSSL/output/lib/libssl.so.1.1"
           cmake .. -DCMAKE_C_COMPILER="$COMPILER-gcc"\
                    -DCMAKE_CXX_COMPILER="$COMPILER-g++"\
                    -DCMAKE_SYSROOT="$LIBC"\
@@ -90,8 +91,8 @@ jobs:
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_SSL_LIBRARY="$OPENSSL/output/lib/libssl.so"\
-                   -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL/output/lib/libcrypto.so"
+                   -DOPENSSL_SSL_LIBRARY="$OPENSSL/output/lib/libssl.so.1.1"\
+                   -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL/output/lib/libcrypto.so.1.1"
           make
           ls
           
