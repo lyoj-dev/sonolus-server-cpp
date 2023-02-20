@@ -74,11 +74,11 @@ jobs:
           wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
           cd mysql-connector-c++-8.0.30-src
-          mkdir build && cd build
+          # mkdir build && cd build
           export MAKEFLAGS=-l4
-          cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
-          make
-          export PATH=$PATH:$(pwd)/extra && cd ..
+          # cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
+          # make
+          # export PATH=$PATH:$(pwd)/extra && cd ..
           
           # 交叉编译 libmysqlclient
           mkdir armBuild
@@ -91,7 +91,7 @@ jobs:
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DOPENSSL_ROOT_DIR="$OPENSSL/output"
-          make
+          make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib"
           ls
           
           
