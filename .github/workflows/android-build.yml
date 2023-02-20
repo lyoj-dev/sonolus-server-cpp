@@ -91,8 +91,7 @@ jobs:
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_SSL_LIBRARY="$OPENSSL/output/lib/libssl.so.1.1"\
-                   -DOPENSSL_CRYPTO_LIBRARY="$OPENSSL/output/lib/libcrypto.so.1.1"
+                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"
           make
           ls
           
