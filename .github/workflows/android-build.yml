@@ -60,6 +60,7 @@ jobs:
           cp ./include/* $INCLUDE/ -r
           cp ./output/lib/libssl.a $LIBRARY/
           cp ./output/lib/libcrypto.a $LIBRARY/
+          readelf -h /home/runner/work/sonolus-server-cpp/sonolus-server-cpp/openssl-1.1.1t/output/lib/libssl.so
 
       - name: Cross-Compile libmysqlclient
         run: |
