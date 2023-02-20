@@ -86,7 +86,8 @@ jobs:
                    -DSTACK_DIRECTION=1\
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF
+                   -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
+                   -DDOPENSSL_LIBRARIES="$LIBRARY"
           make
           ls
           
