@@ -91,7 +91,8 @@ jobs:
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"
+                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"\
+                   -DCMAKE_CROSSCOMPILING=TRUE
           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib"
           ls
           
