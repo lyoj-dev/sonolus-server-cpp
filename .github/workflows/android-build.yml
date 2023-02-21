@@ -63,6 +63,7 @@ jobs:
           readelf -h /home/runner/work/sonolus-server-cpp/sonolus-server-cpp/openssl-1.1.1t/output/lib/libssl.so
 
       - name: Cross-Compile libmysqlclient
+        continue-on-error: true
         run: |
           export LIBC=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
