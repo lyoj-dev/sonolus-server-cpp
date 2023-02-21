@@ -80,6 +80,7 @@ jobs:
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
           cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
+          export MAKEFLAGS=-l4
           make
           export PATH=$PATH:$(pwd)/extra && cd ..
           
