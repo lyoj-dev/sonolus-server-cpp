@@ -84,16 +84,13 @@ jobs:
           # 交叉编译 libmysqlclient
           mkdir armBuild
           cd armBuild
-          cmake .. -DCMAKE_C_COMPILER="$COMPILER-gcc"\
-                   -DCMAKE_CXX_COMPILER="$COMPILER-g++"\
-                   -DCMAKE_SYSROOT="$LIBC"\
+          CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC"\
                    -DSTACK_DIRECTION=1\
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"\
-                   -DCMAKE_CROSSCOMPILING=TRUE
-          make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib"
+                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"
+          make
           ls
           
           
