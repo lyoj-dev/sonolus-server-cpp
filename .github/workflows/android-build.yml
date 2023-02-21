@@ -80,7 +80,6 @@ jobs:
           cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
           make
           export PATH=$PATH:$(pwd)/extra && cd ..
-          ls $(pwd)/extra
           
           # 交叉编译 libmysqlclient
           mkdir armBuild
