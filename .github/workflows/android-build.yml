@@ -50,7 +50,7 @@ jobs:
           wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
           tar -xvf openssl-1.1.1t.tar.gz
           cd openssl-1.1.1t
-          ./config --prefix="$(pwd)/output" no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
+          ./config --prefix="$(pwd)/output" -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           sed -i 's/-m64//g' Makefile
           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j16
           make install
@@ -60,10 +60,12 @@ jobs:
           cp ./include/* $INCLUDE/ -r
           cp ./output/lib/libssl.a $LIBRARY/
           cp ./output/lib/libcrypto.a $LIBRARY/
-          readelf -h /home/runner/work/sonolus-server-cpp/sonolus-server-cpp/openssl-1.1.1t/output/lib/libssl.so
+          cp ./output/lib/libcrypto.so.1.1 $LIBRARY/
+          ln $LIBRARY/libcrypto.so.1.1 $LIBRARY/libcrypto.so
+          cp ./output/lib/libssl.so.1.1 $LIBRARY/
+          ln $LIBRARY/libssl.so.1.1 $LIBRARY/libssl.so
 
       - name: Cross-Compile libmysqlclient
-        continue-on-error: true
         run: |
           export LIBC=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
@@ -77,7 +79,6 @@ jobs:
           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
           cd mysql-connector-c++-8.0.30-src
           mkdir build && cd build
-          export MAKEFLAGS=-l4
           cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
           make
           export PATH=$PATH:$(pwd)/extra && cd ..
@@ -85,13 +86,20 @@ jobs:
           # 交叉编译 libmysqlclient
           mkdir armBuild
           cd armBuild
-          CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC"\
+          CC="$COMPILER-gcc" CXX="$COMPILER-g++" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC"\
                    -DSTACK_DIRECTION=1\
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"
+                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"\
+                   -DBUILD_STATIC=ON
+          echo "make; echo Error!" > tmp.sh
+          bash tmp.sh
+          cp ../build/libutils/save_linker_opts ./libutils/save_linker_opts
+          cp ../build/cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.4 ./cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.4
           make
+          cp libmysqlcppconn8-static.a $LIBRARY/libmysqlclient.a
+
           ls
           
           
@@ -103,4 +111,4 @@ jobs:
 #           title: Sonolus Server ${{ env.VERSION }}
 #           prerelease: false
 #           files: |
-#             windows-x64.zip
+#             android-aarch64.zip
