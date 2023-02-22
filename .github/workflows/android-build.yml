@@ -62,8 +62,8 @@ jobs:
           make -j8
           mkdir $INCLUDE/jsoncpp
           cp ../include/json $INCLUDE/json -r
-          cp libjsoncpp.a $LIBRARY/
-          cp libjsoncpp.so.1.9.5 $LIBRARY/
+          cp ./lib/libjsoncpp.a $LIBRARY/
+          cp ./lib/libjsoncpp.so.1.9.5 $LIBRARY/
           ln $LIBRARY/libjsoncpp.so.1.9.5 $LIBRARY/libjsoncpp.so.25
           ln $LIBRARY/libjsoncpp.so.1.9.5 $LIBRARY/libjsoncpp.so
       
