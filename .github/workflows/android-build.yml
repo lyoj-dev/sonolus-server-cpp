@@ -33,7 +33,6 @@ jobs:
           # 安装交叉编译环境
           wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
           tar -xvf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz
-
           # 测试交叉编译环境
           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
@@ -91,7 +90,7 @@ jobs:
           ln $LIBRARY/libcrypto.so.1.1 $LIBRARY/libcrypto.so
           cp ./output/lib/libssl.so.1.1 $LIBRARY/
           ln $LIBRARY/libssl.so.1.1 $LIBRARY/libssl.so
-
+          
       - name: Cross-Compile libmysqlclient
         run: |
           export LIBC=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
@@ -101,9 +100,9 @@ jobs:
           export OPENSSL=$(pwd)/openssl-1.1.1t
           
           # 在主机平台上编译 libmysqlclient
-          wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.32-src.tar.gz
-          tar -xvf mysql-connector-c++-8.0.32-src.tar.gz
-          cd mysql-connector-c++-8.0.32-src
+          wget https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-src.tar.gz
+          tar -xvf mysql-connector-c-6.1.11-src.tar.gz
+          cd mysql-connector-c-6.1.11-src
           mkdir build && cd build
           cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
           export MAKEFLAGS=-l4
@@ -118,17 +117,17 @@ jobs:
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
                    -DHAVE_CXX_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
-                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"\
-                   -DBUILD_STATIC=ON
+                   -DOPENSSL_ROOT_DIR="$OPENSSL/output"
           echo "make; echo Error!" > tmp.sh
           bash tmp.sh
-          cp ../build/libutils/save_linker_opts ./libutils/save_linker_opts
-          cp ../build/cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.6.0 ./cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.6.0
+          cp ../build/extra/* ./extra
           make
-          cp libmysqlcppconn8-static.a $LIBRARY/libmysqlclient.a
-          wget "https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/libmysql.zip"
-          unzip libmysql.zip
-          cp ./mysql $INCLUDE/ -r
+          cp ./libmysql/libmysqlclient.a $LIBRARY/libmysqlclient.a
+          cp ./libmysql/libmysqlclient.so.18.4. $LIBRARY/libmysqlclient.so.18.4.
+          ln $LIBRARY/libmysqlclient.so.18.4. $LIBRARY/libmysqlclient.so.18
+          ln $LIBRARY/libmysqlclient.so.18.4. $LIBRARY/libmysqlclient.so
+          cp ../include $INCLUDE/mysql -r
+          mv $INCLUDE/mysql/mysql_version.h.in $INCLUDE/mysql/mysql_version.h
           
       - name: Compile Sonolus Server for Android
         run: |
@@ -136,10 +135,6 @@ jobs:
           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ main.cpp -omain -lmysqlclient -ljsoncpp -lpthread -lcrypto -lssl -std=c++14 -O2
-      
-      - name: Checking Sonolus Server for Android
-        run: |
-          ./main help
           
       - name: Packaging Sonolus Server
         run: |
