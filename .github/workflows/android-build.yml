@@ -49,7 +49,7 @@ jobs:
           # 交叉编译 libjsoncpp
           git clone https://github.com/open-source-parsers/jsoncpp
           cd jsoncpp
-          mkdir build & cd build
+          mkdir build && cd build
           CC="$COMPILER-gcc" CXX="$COMPILER-g++" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC" -DBUILD_SHARED_LIB=OFF
           make -j8
           make install
