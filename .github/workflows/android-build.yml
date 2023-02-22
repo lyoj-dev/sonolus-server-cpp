@@ -110,9 +110,7 @@ jobs:
           cd mysql-connector-c-6.1.11-src
           mkdir build && cd build
           $CMAKE .. -DOPENSSL_INCLUDE_DIR="/usr/include"
-          export MAKEFLAGS=-l4
-          make
-          export PATH=$PATH:$(pwd)/extra && cd ..
+          make && cd ..
           
           # 交叉编译 libmysqlclient
           mkdir armBuild
@@ -125,7 +123,7 @@ jobs:
                    -DOPENSSL_ROOT_DIR="$OPENSSL/output"
           echo "make; echo Error!" > tmp.sh
           bash tmp.sh
-          cp ../build/extra/* ./extra
+          cp ../build/extra/* ./extra -r
           make
           cp ./libmysql/libmysqlclient.a $LIBRARY/libmysqlclient.a
           cp ./libmysql/libmysqlclient.so.18.4. $LIBRARY/libmysqlclient.so.18.4.
