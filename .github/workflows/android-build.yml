@@ -46,14 +46,26 @@ jobs:
           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           
-          # 交叉编译 libjsoncpp
+          # 在主机平台上编译 libjsoncpp
           git clone https://github.com/open-source-parsers/jsoncpp
           cd jsoncpp
           mkdir build && cd build
+          cmake .. && make -j8
+          cd ..
+          
+          # 交叉编译 libjsoncpp
+          mkdir armBuild && cd armBuild
           CC="$COMPILER-gcc" CXX="$COMPILER-g++" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC" -DBUILD_SHARED_LIB=OFF
+          echo "make -j8; echo Error!" > tmp.sh
+          bash tmp.sh
+          cp ../build/bin/* ./bin/
           make -j8
-          make install
-          ls
+          mkdir $INCLUDE/jsoncpp
+          cp ../include/json $INCLUDE/json -r
+          cp libjsoncpp.a $LIBRARY/
+          cp libjsoncpp.so.1.9.5 $LIBRARY/
+          ln $LIBRARY/libjsoncpp.so.1.9.5 $LIBRARY/libjsoncpp.so.25
+          ln $LIBRARY/libjsoncpp.so.1.9.5 $LIBRARY/libjsoncpp.so
       
       - name: Cross-Compile libcrypto & libssl
         run: |
@@ -89,7 +101,6 @@ jobs:
           export OPENSSL=$(pwd)/openssl-1.1.1t
           
           # 在主机平台上编译 libmysqlclient
-          sudo apt install cmake openssl libssl-dev
           wget https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.30-src.tar.gz
           tar -xvf mysql-connector-c++-8.0.30-src.tar.gz
           cd mysql-connector-c++-8.0.30-src
@@ -115,16 +126,29 @@ jobs:
           cp ../build/cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.4 ./cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.4
           make
           cp libmysqlcppconn8-static.a $LIBRARY/libmysqlclient.a
-
-          ls
+          cp ./include/mysql $INCLUDE/ -r
           
+      - name: Compile Sonolus Server for Android
+        run: |
+          export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
+          export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
+          export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
+          $COMPILER-g++ main.cpp -osonolus -lmysqlclient -ljsoncpp -lpthread -lcrypto -lssl -std=c++14 -O2
+      
+      - name: Checking Sonolus Server for Android
+        run: |
+          ./sonolus help
           
-#       - name: Test Github Release
-#         uses: marvinpinto/action-automatic-releases@latest
-#         with:
-#           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-#           automatic_release_tag: ${{ env.VERSION }}
-#           title: Sonolus Server ${{ env.VERSION }}
-#           prerelease: false
-#           files: |
-#             android-aarch64.zip
+      - name: Packaging Sonolus Server
+        run: |
+          zip android-aarch64.zip sonolus
+          
+      - name: Test Github Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.VERSION }}
+          title: Sonolus Server ${{ env.VERSION }}
+          prerelease: false
+          files: |
+            android-aarch64.zip
