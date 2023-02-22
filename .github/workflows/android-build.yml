@@ -39,6 +39,21 @@ jobs:
           export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ --version
+          
+      - name: Cross-Compile libjsoncpp
+        run: |
+          export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
+          export INCLUDE=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/include/c++/12.2.1
+          export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
+          
+          # 交叉编译 libjsoncpp
+          git clone https://github.com/open-source-parsers/jsoncpp
+          cd jsoncpp
+          mkdir build & cd build
+          CC="$COMPILER-gcc" CXX="$COMPILER-g++" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC" -DBUILD_SHARED_LIB=OFF
+          make -j8
+          make install
+          ls
       
       - name: Cross-Compile libcrypto & libssl
         run: |
