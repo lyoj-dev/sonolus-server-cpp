@@ -123,7 +123,8 @@ jobs:
                    -DOPENSSL_ROOT_DIR="$OPENSSL/output"
           echo "make; echo Error!" > tmp.sh
           bash tmp.sh
-          cp ../build/extra/* ./extra -r
+          echo "cp ../build/extra/* ./extra; echo OK;" > tmp.sh
+          bash tmp.sh
           make
           cp ./libmysql/libmysqlclient.a $LIBRARY/libmysqlclient.a
           cp ./libmysql/libmysqlclient.so.18.4. $LIBRARY/libmysqlclient.so.18.4.
