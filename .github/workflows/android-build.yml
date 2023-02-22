@@ -99,12 +99,17 @@ jobs:
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           export OPENSSL=$(pwd)/openssl-1.1.1t
           
+          # 降级cmake
+          wget https://cmake.org/files/v3.16/cmake-3.16.3-Linux-x86_64.tar.gz
+          tar -xvf cmake-3.16.3-Linux-x86_64.tar.gz
+          export CMAKE=$(pwd)/cmake-3.16.3-Linux-x86_64/bin/cmake
+          
           # 在主机平台上编译 libmysqlclient
           wget https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-src.tar.gz
           tar -xvf mysql-connector-c-6.1.11-src.tar.gz
           cd mysql-connector-c-6.1.11-src
           mkdir build && cd build
-          cmake .. -DOPENSSL_INCLUDE_DIR="/usr/include"
+          $CMAKE .. -DOPENSSL_INCLUDE_DIR="/usr/include"
           export MAKEFLAGS=-l4
           make
           export PATH=$PATH:$(pwd)/extra && cd ..
@@ -112,7 +117,7 @@ jobs:
           # 交叉编译 libmysqlclient
           mkdir armBuild
           cd armBuild
-          CC="$COMPILER-gcc" CXX="$COMPILER-g++" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" cmake .. -DCMAKE_SYSROOT="$LIBC"\
+          CC="$COMPILER-gcc" CXX="$COMPILER-g++" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" $CMAKE .. -DCMAKE_SYSROOT="$LIBC"\
                    -DSTACK_DIRECTION=1\
                    -DHAVE_LLVM_LIBCPP=OFF\
                    -DHAVE_C_FLOATING_POINT_OPTIMIZATION_PROBLEMS=OFF\
