@@ -123,7 +123,7 @@ jobs:
           echo "make; echo Error!" > tmp.sh
           bash tmp.sh
           cp ../build/libutils/save_linker_opts ./libutils/save_linker_opts
-          cp ../build/cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.4 ./cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.4
+          cp ../build/cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.6.0 ./cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc-3.19.6.0
           make
           cp libmysqlcppconn8-static.a $LIBRARY/libmysqlclient.a
           wget "https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/libmysql.zip"
