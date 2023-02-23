@@ -63,6 +63,12 @@ jobs:
           mv ./README.md ./packages/ -Force
           mv ./README_en.md ./packages/ -Force
           Compress-Archive -Path ./packages/* -DestinationPath ./windows-x64.zip
+          
+      - name: Upload Sonolus Server
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: windows-x64
+          path: ./packages/*
             
   android-build:
     runs-on: ubuntu-20.04
@@ -182,15 +188,34 @@ jobs:
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ main.cpp -omain -lmysqlclient -ljsoncpp -lpthread -lcrypto -lssl -std=c++14 -O2
           
-      - name: Packaging Sonolus Server
-        run: |
-          zip android-aarch64.zip main
+      - name: Upload Sonolus Server
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: android-aarch64
+          path: ./main
           
   publish:
     runs-on: ubuntu-20.04
     needs: [windows-build, android-build]
     steps:
       - uses: actions/checkout@v3
+  
+      - name: Download Sonolus Server for Windows
+        uses: actions/download-artifact@v3.0.2
+        with:
+          # Artifact name
+          name: windows-x64
+          # Destination path
+          path: ./windows-x64.zip
+  
+      - name: Download Sonolus Server for Android
+        uses: actions/download-artifact@v3.0.2
+        with:
+          # Artifact name
+          name: android-aarch64
+          # Destination path
+          path: ./android-aarch64.zip
+        
       - name: Upload Github Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
