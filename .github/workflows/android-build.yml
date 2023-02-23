@@ -1,6 +1,8 @@
 name: android-build
 
 on:
+  push:
+  
   release:
     types: [published]
   workflow_dispatch:
@@ -62,7 +64,7 @@ jobs:
           wget https://www.openssl.org/source/openssl-1.1.1t.tar.gz
           tar -xvf openssl-1.1.1t.tar.gz
           cd openssl-1.1.1t
-          ./config --prefix="$(pwd)/output" no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
+          ./config --prefix="$(pwd)/output" no-share no-zlib no-asm -DOPENSSL_THREADS -pthread -D_REENTRANT -D_THREAD_SAFE -D_THREADSAFE
           sed -i 's/-m64//g' Makefile
           make CC="$COMPILER-gcc" AR="$COMPILER-ar" RANLIB="$COMPILER-ranlib" -j16
           make install
@@ -72,10 +74,6 @@ jobs:
           cp ./include/* $INCLUDE/ -r
           cp ./output/lib/libssl.a $LIBRARY/
           cp ./output/lib/libcrypto.a $LIBRARY/
-          cp ./output/lib/libcrypto.so.1.1 $LIBRARY/
-          ln $LIBRARY/libcrypto.so.1.1 $LIBRARY/libcrypto.so
-          cp ./output/lib/libssl.so.1.1 $LIBRARY/
-          ln $LIBRARY/libssl.so.1.1 $LIBRARY/libssl.so
           
       - name: Cross-Compile libmysqlclient
         run: |
