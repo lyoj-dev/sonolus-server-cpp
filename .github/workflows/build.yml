@@ -6,61 +6,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  windows-build:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v3
-            
-      - name: Setup C/C++ Compiler
-        run: |
-          curl "https://ghproxy.com/https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/windows-x64.zip" -o gcc.zip
-          unzip gcc.zip
-      
-      - name: Checking C/C++ Compiler
-        run: |
-          ./mingw/bin/g++ --version
-        
-      - name: Compiling Sonolus Server for Windows
-        run: |
-          ./mingw/bin/g++.exe main.cpp -osonolus -lmysql -lpthread -lcrypto -lssl -lwsock32 -ljson -std=c++14 -O2
-          
-      - name: Fetching Packages for Sonolus Server
-        run: |
-          curl "https://ghproxy.com/https://github.com/LittleYang0531/LittleYang0531/releases/download/g++/packages.zip" -o packages.zip
-          mkdir packages
-          mv packages.zip ./packages
-          cd packages
-          unzip packages.zip
-          rm ./packages.zip
-          rm sonolus.exe
-      
-      - name: Checking Sonolus Server for Windows
-        run: |
-          mv sonolus.exe ./packages
-          cd packages
-          ./sonolus help
-
-      - name: Packaging Sonolus Server
-        run: |
-          mv ./config/* ./packages/config/ -Force
-          mv ./i18n/* ./packages/i18n/ -Force
-          mv ./web/css ./packages/web/ -Force
-          mv ./web/js ./packages/web/ -Force
-          mv ./web/html ./packages/web/ -Force
-          mv ./CODE_OF_CONDUCT.md ./packages/ -Force
-          mv ./data.sql ./packages/ -Force
-          mv ./LICENSE.txt ./packages/ -Force
-          mv ./README.md ./packages/ -Force
-          mv ./README_en.md ./packages/ -Force
-          Compress-Archive -Path ./packages/* -DestinationPath ./windows-x64.zip
-          
-      - name: Upload Sonolus Server
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: windows-x64
-          path: ./packages/*
-            
   android-build:
     runs-on: ubuntu-20.04
 
@@ -181,47 +126,12 @@ jobs:
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ main.cpp -omain -lmysqlclient -ljsoncpp -lpthread -lcrypto -lssl -std=c++14 -O2
           
-      - name: Upload Sonolus Server
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: android-aarch64
-          path: ./main
-          
-  publish:
-    runs-on: ubuntu-20.04
-    needs: [windows-build, android-build]
-    steps:
-      - uses: actions/checkout@v3
-  
-      - name: Download Sonolus Server for Windows
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name: windows-x64
-          path: ./windows-x64
-  
-      - name: Download Sonolus Server for Android
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name: android-aarch64
-          path: ./android-aarch64
-      
-      - name: Package Sonolus Server
+      - name: Packaging Sonolus Server for Windows
         run: |
-          zip windows-x64.zip ./windows-x64/* -r
-          zip android-aarch64.zip ./android-aarch64/* -r
+          zip android-aarch64.zip main
           
-      - name: Rewrite the Version
-        run: |
-          export REF=${{ github.ref }}
-          echo "VERSION=${REF##*/}" >> $GITHUB_ENV
-          
-      - name: Upload Github Release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Upload Sonolus Server for Android
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ env.VERSION }}
-          title: Sonolus Server ${{ env.VERSION }}
-          prerelease: false
-          files: |
-            windows-x64.zip
-            android-aarch64.zip
+          files: android-aarch64.zip
