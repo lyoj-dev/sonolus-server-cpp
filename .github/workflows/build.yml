@@ -206,7 +206,7 @@ jobs:
           # Artifact name
           name: windows-x64
           # Destination path
-          path: ./windows-x64.zip
+          path: ./windows-x64
   
       - name: Download Sonolus Server for Android
         uses: actions/download-artifact@v3.0.2
@@ -214,8 +214,13 @@ jobs:
           # Artifact name
           name: android-aarch64
           # Destination path
-          path: ./android-aarch64.zip
-        
+          path: ./android-aarch64
+      
+      - name: Package Sonolus Server
+        run: |
+          zip windows-x64.zip ./windows-x64/* -r
+          zip android-aarch64.zip ./android-aarch64/* -r
+          
       - name: Upload Github Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
