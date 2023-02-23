@@ -27,6 +27,12 @@ jobs:
           export LIBRARY=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/lib64
           $COMPILER-g++ --version
           
+      - name: Upload Sonolus Server for Android
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: main.cpp
+          
       - name: Cross-Compile libjsoncpp
         run: |
           export COMPILER=$(pwd)/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu
@@ -131,9 +137,3 @@ jobs:
       - name: Packaging Sonolus Server for Windows
         run: |
           zip android-aarch64.zip main
-          
-      - name: Upload Sonolus Server for Android
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: android-aarch64.zip
